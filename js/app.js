@@ -489,6 +489,110 @@ Kindly review my house / plot details and approve adding me to the official Sri 
       });
     }
 
+    // Button to open Add Resident Tab directly from toolbar
+    const openAddResidentBtn = document.getElementById('btnOpenAddResidentTab');
+    if (openAddResidentBtn) {
+      openAddResidentBtn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabPanes.forEach(p => p.style.display = 'none');
+
+        const addResidentTabBtn = document.querySelector('.admin-tab-btn[data-tab="tabAddResident"]');
+        if (addResidentTabBtn) addResidentTabBtn.classList.add('active');
+
+        const addResidentPane = document.getElementById('tabAddResident');
+        if (addResidentPane) addResidentPane.style.display = 'block';
+      });
+    }
+
+    // Manual Add Resident Form Handler
+    const addResidentForm = document.getElementById('adminAddResidentForm');
+    if (addResidentForm) {
+      addResidentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const fullName = document.getElementById('adminManualName').value.trim();
+        const plotNumber = document.getElementById('adminManualPlot').value.trim();
+        let phone = document.getElementById('adminManualPhone').value.trim().replace(/\D/g, '');
+        const residentType = document.getElementById('adminManualType').value;
+        const email = document.getElementById('adminManualEmail').value.trim();
+        const initialStatus = document.getElementById('adminManualInitialStatus').value;
+        const notes = document.getElementById('adminManualNotes').value.trim();
+
+        if (!fullName || !plotNumber || !phone) {
+          showToast('Please fill in all mandatory fields (Name, House / Plot Number, Phone)', 'error');
+          return;
+        }
+
+        if (phone.length < 10) {
+          showToast('Please enter a valid 10-digit mobile number', 'error');
+          return;
+        }
+
+        const requests = getRequests();
+        let refNo;
+        do {
+          refNo = 'SBN-' + Math.floor(1000 + Math.random() * 9000);
+        } while (requests.some(r => r.id === refNo));
+
+        const newResident = {
+          id: refNo,
+          fullName,
+          plotNumber,
+          phone,
+          residentType,
+          email,
+          notes: notes || 'Registered manually by Admin',
+          status: initialStatus,
+          timestamp: new Date().toISOString(),
+          approvedAt: initialStatus === 'approved' ? new Date().toISOString() : null
+        };
+
+        requests.unshift(newResident);
+        saveRequests(requests);
+
+        const settings = getSettings();
+
+        // If approved, launch WhatsApp to send group invite
+        if (initialStatus === 'approved') {
+          const inviteMsg = 
+`🎉 *WELCOME TO SRI BALAJEE NAGAR COMMUNITY!*
+
+Dear *${fullName}*,
+Your details for *${plotNumber}* have been registered and *APPROVED* in the Sri Balajee Nagar Resident Portal! 🎊
+
+👉 *Join the Official Resident WhatsApp Group here:*
+${settings.groupInviteUrl}
+
+Please save this link and join the group for daily colony updates, emergency alerts, and community discussions.
+
+_Warm regards,_
+*Sri Balajee Nagar Welfare Association*`;
+
+          const waUrl = `https://wa.me/91${phone}?text=${encodeURIComponent(inviteMsg)}`;
+          try {
+            window.open(waUrl, '_blank');
+          } catch (err) {
+            console.warn('Popup blocked', err);
+          }
+        }
+
+        addResidentForm.reset();
+        showToast(`Resident ${fullName} (#${refNo}) added successfully!`, 'success');
+
+        // Switch back to requests tab and render table
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabPanes.forEach(p => p.style.display = 'none');
+
+        const reqTabBtn = document.querySelector('.admin-tab-btn[data-tab="tabRequests"]');
+        if (reqTabBtn) reqTabBtn.classList.add('active');
+
+        const reqPane = document.getElementById('tabRequests');
+        if (reqPane) reqPane.style.display = 'block';
+
+        renderAdminRequests();
+      });
+    }
+
     // Settings Form
     const settingsForm = document.getElementById('adminSettingsForm');
     if (settingsForm) {
