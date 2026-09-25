@@ -240,6 +240,14 @@
           return;
         }
 
+        // Prevent duplicate registration with same phone number
+        const requests = getRequests();
+        const existingReq = requests.find(r => r.phone.replace(/\D/g, '') === phone);
+        if (existingReq) {
+          showToast(`This mobile number (+91 ${phone}) is already registered for ${existingReq.fullName} (${existingReq.plotNumber}). Multiple submissions are not allowed.`, 'error');
+          return;
+        }
+
         const settings = getSettings();
         const cleanAdminPhone = settings.adminPhone.replace(/\D/g, '');
         const refNo = 'SBN-' + Math.floor(1000 + Math.random() * 9000);
@@ -257,7 +265,6 @@
         };
 
         // Save into local database
-        const requests = getRequests();
         requests.unshift(newRequest);
         saveRequests(requests);
 
@@ -292,11 +299,18 @@ Kindly review my house / plot details and approve adding me to the official Sri 
           };
         }
 
+        // Automatically launch WhatsApp directly to admin for approval
+        try {
+          window.open(waUrl, '_blank');
+        } catch (err) {
+          console.warn('Popup blocked, accessible via button', err);
+        }
+
         // Show Success Step
         formStep.style.display = 'none';
         successStep.style.display = 'block';
 
-        showToast('Request submitted! It has been recorded for admin approval.', 'success');
+        showToast('Request submitted! WhatsApp launched to send approval request to Colony Admin.', 'success');
 
         // Refresh admin table if admin view is open
         renderAdminRequests();
