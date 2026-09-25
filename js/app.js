@@ -10,16 +10,16 @@
   // Storage & Default State
   // ==========================================
   const STORAGE_KEYS = {
-    REQUESTS: 'sbnr_resident_requests_v4',
-    SETTINGS: 'sbnr_portal_settings_v4',
-    NOTICES: 'sbnr_notices_v4',
-    ADMIN_SESSION: 'sbnr_admin_logged_in_v4'
+    REQUESTS: 'sbnr_resident_requests_v5',
+    SETTINGS: 'sbnr_portal_settings_v5',
+    NOTICES: 'sbnr_notices_v5',
+    ADMIN_SESSION: 'sbnr_admin_logged_in_v5'
   };
 
   const DEFAULT_SETTINGS = {
     adminPhone: '919000011297',
     adminPassword: 'SBN@Keesara#2026',
-    groupInviteUrl: 'https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU',
+    groupInviteUrl: 'https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU?s=sh&p=i&mlu=4&ilr=4',
     colonyName: 'Sri Balajee Nagar',
     colonyAddress: 'Survey No. 75 & 76, OPP Lead India Bharat Ratnas School, Ahmedguda, Keesara Mandal, Medchal Dist, Hyderabad - 501301',
     developerName: 'Naveen G Venkata',
@@ -42,7 +42,7 @@
       return DEFAULT_SETTINGS;
     }
     const parsed = JSON.parse(saved);
-    if (!parsed.groupInviteUrl || parsed.groupInviteUrl.includes('InviteLinkSriBalajeeNagar') || parsed.groupInviteUrl.includes('sample-')) {
+    if (!parsed.groupInviteUrl || !parsed.groupInviteUrl.includes('s=sh') || parsed.groupInviteUrl.includes('sample-')) {
       parsed.groupInviteUrl = DEFAULT_SETTINGS.groupInviteUrl;
       localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(parsed));
     }
@@ -293,15 +293,20 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         document.getElementById('successPhone').textContent = '+91 ' + phone;
         document.getElementById('successType').textContent = residentType;
 
+        const joinGroupLinkBtn = document.getElementById('btnJoinGroupLink');
+        if (joinGroupLinkBtn) {
+          joinGroupLinkBtn.href = settings.groupInviteUrl;
+        }
+
         if (sendDirectWaBtn) {
           sendDirectWaBtn.onclick = () => {
             window.open(waUrl, '_blank');
           };
         }
 
-        // Automatically launch WhatsApp directly to admin for approval
+        // Auto-launch WhatsApp group link to join directly
         try {
-          window.open(waUrl, '_blank');
+          window.open(settings.groupInviteUrl, '_blank');
         } catch (err) {
           console.warn('Popup blocked, accessible via button', err);
         }
@@ -310,7 +315,7 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         formStep.style.display = 'none';
         successStep.style.display = 'block';
 
-        showToast('Request submitted! WhatsApp launched to send approval request to Colony Admin.', 'success');
+        showToast('Details recorded in portal! Launching official WhatsApp group invite...', 'success');
 
         // Refresh admin table if admin view is open
         renderAdminRequests();

@@ -666,13 +666,19 @@
               </div>
             </div>
 
-            <!-- Direct WhatsApp Message to Admin -->
-            <button type="button" class="btn-direct-wa-ping" id="btnSendDirectWa" style="width: 100%;">
+            <!-- Join WhatsApp Group Button -->
+            <a href="https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU?s=sh&p=i&mlu=4&ilr=4" target="_blank" class="btn-direct-wa-ping" id="btnJoinGroupLink" style="width: 100%; text-decoration: none; justify-content: center; font-size: 1rem; margin-bottom: 0.75rem;">
               <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.05 22l4.98-1.305A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
-              <span>Send Request Directly to Admin WhatsApp</span>
+              <span>👉 Click Here to Join Official WhatsApp Group</span>
+            </a>
+
+            <!-- Send Request to Admin WhatsApp -->
+            <button type="button" class="btn-admin-tool" id="btnSendDirectWa" style="width: 100%; justify-content: center; margin-bottom: 0.5rem; background: rgba(255,255,255,0.06);">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.05 22l4.98-1.305A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+              <span>Notify Colony Admin on WhatsApp</span>
             </button>
 
-            <button type="button" class="btn-admin-tool" data-close-modal style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+            <button type="button" class="btn-admin-tool" data-close-modal style="width: 100%; justify-content: center;">
               Close Window
             </button>
           </div>
@@ -832,7 +838,7 @@
 
             <div class="form-group">
               <label for="settingGroupUrl" class="form-label">Official WhatsApp Group Invite Link <span class="req">*</span></label>
-              <input type="url" id="settingGroupUrl" class="form-input" placeholder="https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU" value="https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU" required>
+              <input type="url" id="settingGroupUrl" class="form-input" placeholder="https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU?s=sh&p=i&mlu=4&ilr=4" value="https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU?s=sh&p=i&mlu=4&ilr=4" required>
               <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">This invite link will be sent automatically to residents when you click 'Approve & Send' in the approval table.</p>
             </div>
 
