@@ -769,9 +769,17 @@
             <input type="text" id="adminSearchRequests" class="admin-search-input" placeholder="🔍 Search by House / Plot, Name, Phone...">
             
             <div class="admin-actions-bar">
+              <button type="button" class="btn-admin-tool" id="btnSyncCloudRequests" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.4); color: #c084fc;" title="Fetch latest submissions from Cloud Database">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span id="btnSyncCloudText">🔄 Sync Cloud</span>
+              </button>
               <button type="button" class="btn-admin-tool" id="btnOpenAddResidentTab" style="background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.4); color: #25D366;" title="Add Resident Manually">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 <span>+ Add Resident</span>
+              </button>
+              <button type="button" class="btn-admin-tool" id="btnOpenImportWaModal" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;" title="Paste WhatsApp message received from resident to auto-import">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <span>📥 Import WA Msg</span>
               </button>
               <button type="button" class="btn-admin-tool" id="btnExportRequests">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -941,7 +949,43 @@
   </div>
 
   <!-- =========================================================================
-       MODAL 4: Gallery Lightbox Modal
+       MODAL 4: Import WhatsApp Message Received by Admin
+       ========================================================================= -->
+  <div class="modal-overlay" id="importWaModal">
+    <div class="modal-container" style="max-width: 560px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-icon-badge" style="background: rgba(37, 211, 102, 0.2); color: #25D366;">📥</div>
+          <div>
+            <h3 class="modal-title">Import WhatsApp Message</h3>
+            <span class="modal-subtitle">Auto-parse message forwarded by resident</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" data-close-modal>✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Paste the WhatsApp message you received from the resident below. The system will automatically extract Name, House / Plot No, Phone, and Category into your Admin directory.
+        </p>
+
+        <div class="form-group">
+          <label for="importWaTextarea" class="form-label">Paste WhatsApp Message Text <span class="req">*</span></label>
+          <textarea id="importWaTextarea" class="form-textarea" rows="8" placeholder="Paste the message here... (e.g. 👤 Resident Name: Ramesh, 🏡 House / Plot No: Plot 45, 📱 WhatsApp Number: +91 9876543210...)"></textarea>
+        </div>
+
+        <div class="modal-footer" style="padding-top: 0.75rem; display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn-admin-tool" data-close-modal>Cancel</button>
+          <button type="button" class="btn-hero-primary" id="btnParseAndImportWa">
+            <span>✨ Parse & Import Resident</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 5: Gallery Lightbox Modal
        ========================================================================= -->
   <div class="modal-overlay" id="lightboxModal">
     <div class="modal-container" style="max-width: 800px; background: rgba(8, 12, 20, 0.95);">

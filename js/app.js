@@ -1,6 +1,6 @@
 /**
  * Sri Balajee Nagar - Community Portal Application Script
- * Features: WhatsApp Community Onboarding, Multi-step Admin Approval, Notices & Interactive Directory
+ * Features: WhatsApp Community Onboarding, Multi-step Admin Approval, Notices, Cloud Sync & Interactive Directory
  */
 
 (function () {
@@ -16,6 +16,11 @@
     ADMIN_SESSION: 'sbnr_admin_logged_in_v5'
   };
 
+  const CLOUD_CONFIG = {
+    ENDPOINT: 'https://api.restful-api.dev/objects/ff808181a09d98f701a0d81f649311fb',
+    OBJECT_NAME: 'sbnr_community_requests_v1'
+  };
+
   const DEFAULT_SETTINGS = {
     adminPhone: '919000011297',
     adminPassword: 'SBN@Keesara#2026',
@@ -26,14 +31,11 @@
     developerPhone: '+91 9000011297'
   };
 
-  // No hardcoded notices as requested - admin can post when needed
   const DEFAULT_NOTICES = [];
-
-  // No hardcoded requests - will be populated when residents submit
   const DEFAULT_REQUESTS = [];
 
   // ==========================================
-  // Helper State Managers
+  // Helper State Managers & Cloud Sync
   // ==========================================
   function getSettings() {
     const saved = localStorage.getItem(STORAGE_KEYS.SETTINGS);
@@ -64,6 +66,75 @@
 
   function saveRequests(requests) {
     localStorage.setItem(STORAGE_KEYS.REQUESTS, JSON.stringify(requests));
+  }
+
+  async function pushRequestsToCloud(requests) {
+    try {
+      await fetch(CLOUD_CONFIG.ENDPOINT, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: CLOUD_CONFIG.OBJECT_NAME,
+          data: { requests: requests }
+        })
+      });
+    } catch (err) {
+      console.warn('Cloud sync push warning:', err);
+    }
+  }
+
+  async function syncCloudRequests(silent = false) {
+    const syncBtnText = document.getElementById('btnSyncCloudText');
+    if (syncBtnText) syncBtnText.textContent = '⏳ Syncing...';
+
+    try {
+      const response = await fetch(CLOUD_CONFIG.ENDPOINT);
+      if (response.ok) {
+        const json = await response.json();
+        const cloudRequests = (json.data && Array.isArray(json.data.requests)) ? json.data.requests : [];
+        
+        // Merge cloud requests with local requests
+        const localRequests = getRequests();
+        const mergedMap = new Map();
+
+        // Cloud items first
+        cloudRequests.forEach(req => {
+          if (req && req.id) mergedMap.set(req.id, req);
+        });
+
+        // Local items
+        localRequests.forEach(req => {
+          if (req && req.id) {
+            if (mergedMap.has(req.id)) {
+              const cloudItem = mergedMap.get(req.id);
+              if (req.status === 'approved' && cloudItem.status !== 'approved') {
+                mergedMap.set(req.id, req);
+              }
+            } else {
+              mergedMap.set(req.id, req);
+            }
+          }
+        });
+
+        const mergedList = Array.from(mergedMap.values());
+        mergedList.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+
+        saveRequests(mergedList);
+        pushRequestsToCloud(mergedList);
+        
+        renderAdminRequests();
+        if (!silent) {
+          showToast(`Cloud Sync Complete: ${mergedList.length} resident records up to date.`, 'success');
+        }
+      }
+    } catch (err) {
+      console.warn('Could not sync with cloud:', err);
+      if (!silent) {
+        showToast('Could not connect to cloud sync. Loaded local storage records.', 'warning');
+      }
+    } finally {
+      if (syncBtnText) syncBtnText.textContent = '🔄 Sync Cloud';
+    }
   }
 
   function getNotices() {
@@ -200,7 +271,6 @@
   // ==========================================
   function initJoinWhatsAppFlow() {
     const openBtns = document.querySelectorAll('.trigger-join-wa');
-    const joinModal = document.getElementById('joinGroupModal');
     const form = document.getElementById('joinGroupForm');
     const formStep = document.getElementById('joinFormStep');
     const successStep = document.getElementById('joinSuccessStep');
@@ -262,11 +332,17 @@
           timestamp: new Date().toISOString()
         };
 
-        // Save into local database (every submission captured with its unique ID)
+        // 1. Save into local database first (Admin portal updated before sending WhatsApp)
         requests.unshift(newRequest);
         saveRequests(requests);
 
-        // Build prefilled WhatsApp message to Admin for approval
+        // 2. Sync to cloud database centrally so all admin devices see it immediately
+        pushRequestsToCloud(requests);
+
+        // 3. Re-render admin table immediately if admin view is active
+        renderAdminRequests();
+
+        // 4. Build prefilled WhatsApp message to Admin for approval
         const waMessage = 
 `🏛️ *SRI BALAJEE NAGAR - RESIDENT GROUP JOIN REQUEST*
 
@@ -284,7 +360,7 @@ Kindly review my house / plot details and approve adding me to the official Sri 
 
         const waUrl = `https://wa.me/${cleanAdminPhone}?text=${encodeURIComponent(waMessage)}`;
 
-        // Update Success Step UI
+        // 5. Update Success Step UI
         document.getElementById('successRefId').textContent = '#' + refNo;
         document.getElementById('successName').textContent = fullName;
         document.getElementById('successPlot').textContent = plotNumber;
@@ -302,23 +378,106 @@ Kindly review my house / plot details and approve adding me to the official Sri 
           };
         }
 
-        // Auto-launch WhatsApp directly to Admin Naveen (+91 9000011297) with verification request
-        try {
-          window.open(waUrl, '_blank');
-        } catch (err) {
-          console.warn('Popup blocked, accessible via button', err);
-        }
-
-        // Show Success Step
+        // 6. Show Success Step first
         formStep.style.display = 'none';
         successStep.style.display = 'block';
 
-        showToast(`Request #${refNo} generated! WhatsApp opened to send details to Colony Admin.`, 'success');
+        showToast(`Request #${refNo} recorded in Admin Portal! Opening WhatsApp to send verification...`, 'success');
 
-        // Refresh admin table if admin view is open
-        renderAdminRequests();
+        // 7. Auto-launch WhatsApp directly to Admin Naveen (+91 9000011297)
+        setTimeout(() => {
+          try {
+            window.open(waUrl, '_blank');
+          } catch (err) {
+            console.warn('Popup blocked, accessible via button', err);
+          }
+        }, 350);
       });
     }
+  }
+
+  // ==========================================
+  // WhatsApp Message Parser
+  // ==========================================
+  function parseWhatsAppMessage(text) {
+    if (!text || typeof text !== 'string') return null;
+
+    const cleanText = text.replace(/[*_~`]/g, '');
+
+    // Extract Name
+    let name = '';
+    const nameMatch = cleanText.match(/(?:Resident Name|Full Name|Name)\s*:\s*([^\n\r]+)/i);
+    if (nameMatch) {
+      name = nameMatch[1].trim();
+    }
+
+    // Extract Plot / House Number
+    let plotNumber = '';
+    const plotMatch = cleanText.match(/(?:House \/ Plot No|House \/ Plot Number|Plot No|House No|Plot Number|Plot)\s*:\s*([^\n\r]+)/i);
+    if (plotMatch) {
+      plotNumber = plotMatch[1].trim();
+    }
+
+    // Extract Phone Number
+    let phone = '';
+    const phoneMatch = cleanText.match(/(?:WhatsApp Number|Mobile Number|Mobile|Phone Number|Phone)\s*:\s*([^\n\r]+)/i);
+    if (phoneMatch) {
+      phone = phoneMatch[1].replace(/\D/g, '');
+      if (phone.startsWith('91') && phone.length === 12) {
+        phone = phone.slice(2);
+      }
+    } else {
+      const anyPhoneMatch = cleanText.match(/(?:(?:\+?91)[\s-]?)?([6-9]\d{9})/);
+      if (anyPhoneMatch) {
+        phone = anyPhoneMatch[1];
+      }
+    }
+
+    // Extract Resident Category
+    let residentType = 'House / Plot Owner (Residing)';
+    const catMatch = cleanText.match(/(?:Resident Category|Category|Status)\s*:\s*([^\n\r]+)/i);
+    if (catMatch) {
+      const parsedCat = catMatch[1].trim();
+      if (parsedCat) residentType = parsedCat;
+    }
+
+    // Extract Ref ID if present
+    let refId = '';
+    const refMatch = cleanText.match(/(?:Request Ref ID|Ref ID|Ref No|Reference ID)\s*:\s*#?([A-Za-z0-9-]+)/i);
+    if (refMatch) {
+      refId = refMatch[1].trim().replace(/^#/, '');
+    }
+
+    // Extract Email
+    let email = '';
+    const emailMatch = cleanText.match(/(?:Email Address|Email)\s*:\s*([^\n\r]+)/i);
+    if (emailMatch) {
+      const candidateEmail = emailMatch[1].trim();
+      if (candidateEmail.includes('@') && !candidateEmail.toLowerCase().includes('n/a')) {
+        email = candidateEmail;
+      }
+    }
+
+    // Extract Notes
+    let notes = '';
+    const notesMatch = cleanText.match(/(?:Notes|Reference)\s*:\s*([^\n\r]+)/i);
+    if (notesMatch) {
+      notes = notesMatch[1].trim();
+    }
+
+    if (!name && !plotNumber && !phone) {
+      return null;
+    }
+
+    return {
+      fullName: name || 'Resident',
+      plotNumber: plotNumber || 'Plot Verification',
+      phone: phone || '',
+      residentType,
+      refId,
+      email,
+      notes: notes || 'Imported from resident WhatsApp message'
+    };
   }
 
   // ==========================================
@@ -384,8 +543,6 @@ Kindly review my house / plot details and approve adding me to the official Sri 
   // ==========================================
   function initAdminPortal() {
     const adminTriggerBtns = document.querySelectorAll('.trigger-admin-portal');
-    const adminLoginModal = document.getElementById('adminLoginModal');
-    const adminPortalModal = document.getElementById('adminPortalModal');
     const adminLoginForm = document.getElementById('adminLoginForm');
     const adminPasswordInput = document.getElementById('adminPasswordInput');
     const btnToggleAdminPass = document.getElementById('btnToggleAdminPass');
@@ -467,6 +624,14 @@ Kindly review my house / plot details and approve adding me to the official Sri 
       });
     }
 
+    // Sync Cloud button
+    const btnSyncCloud = document.getElementById('btnSyncCloudRequests');
+    if (btnSyncCloud) {
+      btnSyncCloud.addEventListener('click', () => {
+        syncCloudRequests(false);
+      });
+    }
+
     // Export CSV
     const exportBtn = document.getElementById('btnExportRequests');
     if (exportBtn) {
@@ -517,6 +682,7 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         const requests = getRequests();
         const remaining = requests.filter(r => !selectedIds.includes(r.id));
         saveRequests(remaining);
+        pushRequestsToCloud(remaining);
         renderAdminRequests();
         showToast(`${count} resident record(s) deleted successfully.`, 'info');
       });
@@ -534,6 +700,64 @@ Kindly review my house / plot details and approve adding me to the official Sri 
 
         const addResidentPane = document.getElementById('tabAddResident');
         if (addResidentPane) addResidentPane.style.display = 'block';
+      });
+    }
+
+    // Button to open Import WA Modal
+    const btnOpenImportWaModal = document.getElementById('btnOpenImportWaModal');
+    if (btnOpenImportWaModal) {
+      btnOpenImportWaModal.addEventListener('click', () => {
+        const textarea = document.getElementById('importWaTextarea');
+        if (textarea) textarea.value = '';
+        openModal('importWaModal');
+      });
+    }
+
+    // Button to Parse and Import WA text
+    const btnParseAndImportWa = document.getElementById('btnParseAndImportWa');
+    if (btnParseAndImportWa) {
+      btnParseAndImportWa.addEventListener('click', () => {
+        const textarea = document.getElementById('importWaTextarea');
+        const text = textarea ? textarea.value.trim() : '';
+
+        if (!text) {
+          showToast('Please paste the resident WhatsApp message text.', 'error');
+          return;
+        }
+
+        const parsed = parseWhatsAppMessage(text);
+        if (!parsed || (!parsed.fullName && !parsed.plotNumber)) {
+          showToast('Could not extract resident details. Please verify the message format.', 'error');
+          return;
+        }
+
+        const requests = getRequests();
+        let refNo = parsed.refId;
+        if (!refNo || requests.some(r => r.id === refNo)) {
+          do {
+            refNo = 'SBN-' + Math.floor(1000 + Math.random() * 9000);
+          } while (requests.some(r => r.id === refNo));
+        }
+
+        const newResident = {
+          id: refNo,
+          fullName: parsed.fullName,
+          plotNumber: parsed.plotNumber,
+          phone: parsed.phone,
+          residentType: parsed.residentType,
+          email: parsed.email,
+          notes: parsed.notes,
+          status: 'pending',
+          timestamp: new Date().toISOString()
+        };
+
+        requests.unshift(newResident);
+        saveRequests(requests);
+        pushRequestsToCloud(requests);
+
+        closeModal('importWaModal');
+        renderAdminRequests();
+        showToast(`Imported ${parsed.fullName} (${parsed.plotNumber}) as #${refNo}!`, 'success');
       });
     }
 
@@ -582,6 +806,7 @@ Kindly review my house / plot details and approve adding me to the official Sri 
 
         requests.unshift(newResident);
         saveRequests(requests);
+        pushRequestsToCloud(requests);
 
         const settings = getSettings();
 
@@ -684,6 +909,8 @@ _Warm regards,_
     renderAdminRequests();
     loadAdminSettingsValues();
     openModal('adminPortalModal');
+    // Sync freshest records from cloud database silently in background
+    syncCloudRequests(true);
   }
 
   function loadAdminSettingsValues() {
@@ -710,10 +937,10 @@ _Warm regards,_
 
     const term = searchTerm.toLowerCase();
     const filtered = requests.filter(r => 
-      r.fullName.toLowerCase().includes(term) ||
-      r.plotNumber.toLowerCase().includes(term) ||
-      r.phone.includes(term) ||
-      r.id.toLowerCase().includes(term)
+      (r.fullName && r.fullName.toLowerCase().includes(term)) ||
+      (r.plotNumber && r.plotNumber.toLowerCase().includes(term)) ||
+      (r.phone && r.phone.includes(term)) ||
+      (r.id && r.id.toLowerCase().includes(term))
     );
 
     if (filtered.length === 0) {
@@ -799,6 +1026,7 @@ _Warm regards,_
       req.status = 'approved';
       req.approvedAt = new Date().toISOString();
       saveRequests(requests);
+      pushRequestsToCloud(requests);
 
       renderAdminRequests();
 
@@ -833,6 +1061,7 @@ _Warm regards,_
 
       requests[index].status = 'rejected';
       saveRequests(requests);
+      pushRequestsToCloud(requests);
       renderAdminRequests();
       showToast('Request marked as rejected.', 'info');
     },
@@ -845,6 +1074,7 @@ _Warm regards,_
 
       const filtered = requests.filter(r => r.id !== reqId);
       saveRequests(filtered);
+      pushRequestsToCloud(filtered);
       renderAdminRequests();
       showToast(`Request #${reqId} deleted successfully.`, 'info');
     },
