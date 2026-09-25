@@ -240,17 +240,15 @@
           return;
         }
 
-        // Prevent duplicate registration with same phone number
-        const requests = getRequests();
-        const existingReq = requests.find(r => r.phone.replace(/\D/g, '') === phone);
-        if (existingReq) {
-          showToast(`This mobile number (+91 ${phone}) is already registered for ${existingReq.fullName} (${existingReq.plotNumber}). Multiple submissions are not allowed.`, 'error');
-          return;
-        }
-
         const settings = getSettings();
         const cleanAdminPhone = settings.adminPhone.replace(/\D/g, '');
-        const refNo = 'SBN-' + Math.floor(1000 + Math.random() * 9000);
+        const requests = getRequests();
+
+        // Generate unique Ref ID for every new submission
+        let refNo;
+        do {
+          refNo = 'SBN-' + Math.floor(1000 + Math.random() * 9000);
+        } while (requests.some(r => r.id === refNo));
 
         const newRequest = {
           id: refNo,
@@ -264,7 +262,7 @@
           timestamp: new Date().toISOString()
         };
 
-        // Save into local database
+        // Save into local database (every submission captured with its unique ID)
         requests.unshift(newRequest);
         saveRequests(requests);
 
@@ -315,7 +313,7 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         formStep.style.display = 'none';
         successStep.style.display = 'block';
 
-        showToast('Details recorded in portal! Launching official WhatsApp group invite...', 'success');
+        showToast(`Details recorded in admin portal (Ref ID: #${refNo})!`, 'success');
 
         // Refresh admin table if admin view is open
         renderAdminRequests();
@@ -475,6 +473,22 @@ Kindly review my house / plot details and approve adding me to the official Sri 
       exportBtn.addEventListener('click', exportRequestsToCSV);
     }
 
+    // Clear All Requests
+    const clearBtn = document.getElementById('btnClearAllRequests');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        const requests = getRequests();
+        if (requests.length === 0) {
+          showToast('No resident records to clear.', 'info');
+          return;
+        }
+        if (!confirm('Are you sure you want to permanently clear ALL resident records from the portal?')) return;
+        saveRequests([]);
+        renderAdminRequests();
+        showToast('All resident records have been cleared.', 'success');
+      });
+    }
+
     // Settings Form
     const settingsForm = document.getElementById('adminSettingsForm');
     if (settingsForm) {
@@ -618,6 +632,9 @@ Kindly review my house / plot details and approve adding me to the official Sri 
               ` : `
                 <span style="font-size: 0.75rem; color: #94a3b8;">Archived</span>
               `}
+              <button class="btn-action-delete" onclick="window.sbnrPortal.deleteResident('${req.id}')" title="Delete Request #${req.id}">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
             </div>
           </td>
         </tr>
@@ -674,6 +691,18 @@ _Warm regards,_
       saveRequests(requests);
       renderAdminRequests();
       showToast('Request marked as rejected.', 'info');
+    },
+
+    deleteResident: function (reqId) {
+      const requests = getRequests();
+      const req = requests.find(r => r.id === reqId);
+      const name = req ? req.fullName : 'this resident';
+      if (!confirm(`Are you sure you want to permanently delete request #${reqId} (${name})?`)) return;
+
+      const filtered = requests.filter(r => r.id !== reqId);
+      saveRequests(filtered);
+      renderAdminRequests();
+      showToast(`Request #${reqId} deleted successfully.`, 'info');
     },
 
     resendInvite: function (reqId) {

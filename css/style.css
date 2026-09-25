@@ -1764,6 +1764,26 @@ button {
   color: #ffffff;
 }
 
+.btn-action-delete {
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.35);
+  color: #fca5a5;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-action-delete:hover {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #dc2626;
+}
+
 /* Toast Notifications */
 .toast-container {
   position: fixed;
