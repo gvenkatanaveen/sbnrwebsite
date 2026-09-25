@@ -691,7 +691,7 @@
           <div class="modal-icon-badge" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🔐</div>
           <div>
             <h3 class="modal-title">Admin Access</h3>
-            <span class="modal-subtitle">Enter Security PIN</span>
+            <span class="modal-subtitle">Enter Administrator Password</span>
           </div>
         </div>
         <button type="button" class="btn-modal-close" data-close-modal>✕</button>
@@ -700,9 +700,14 @@
       <div class="modal-body">
         <form id="adminLoginForm">
           <div class="form-group">
-            <label for="adminPinInput" class="form-label">Administrator PIN <span class="req">*</span></label>
-            <input type="password" id="adminPinInput" class="form-input" placeholder="Default PIN: 1234" maxlength="10" required autofocus>
-            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">Default access PIN is <strong style="color: var(--accent-gold);">1234</strong> (can be updated inside settings).</p>
+            <label for="adminPasswordInput" class="form-label">Administrator Password <span class="req">*</span></label>
+            <div style="position: relative; display: flex; align-items: center;">
+              <input type="password" id="adminPasswordInput" class="form-input" placeholder="Enter Administrator Password" required autofocus style="padding-right: 2.75rem;">
+              <button type="button" id="btnToggleAdminPass" aria-label="Toggle password visibility" style="position: absolute; right: 0.75rem; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; padding: 0.25rem;">👁️</button>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+              <span>🔒</span> Authorized Sri Balajee Nagar association administration only.
+            </p>
           </div>
 
           <div class="modal-footer" style="padding-top: 0.75rem;">
@@ -832,8 +837,8 @@
             </div>
 
             <div class="form-group">
-              <label for="settingNewPin" class="form-label">Change Admin PIN (Optional)</label>
-              <input type="password" id="settingNewPin" class="form-input" placeholder="Enter new 4-digit PIN to update">
+              <label for="settingNewPassword" class="form-label">Change Admin Password (Optional - Min 8 characters)</label>
+              <input type="password" id="settingNewPassword" class="form-input" placeholder="Enter new strong password (e.g. SBN@Keesara#2026)">
             </div>
 
             <button type="submit" class="btn-hero-primary" style="margin-top: 1rem;">

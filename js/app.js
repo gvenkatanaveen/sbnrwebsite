@@ -10,15 +10,15 @@
   // Storage & Default State
   // ==========================================
   const STORAGE_KEYS = {
-    REQUESTS: 'sbnr_resident_requests_v3',
-    SETTINGS: 'sbnr_portal_settings_v3',
-    NOTICES: 'sbnr_notices_v3',
-    ADMIN_SESSION: 'sbnr_admin_logged_in_v3'
+    REQUESTS: 'sbnr_resident_requests_v4',
+    SETTINGS: 'sbnr_portal_settings_v4',
+    NOTICES: 'sbnr_notices_v4',
+    ADMIN_SESSION: 'sbnr_admin_logged_in_v4'
   };
 
   const DEFAULT_SETTINGS = {
     adminPhone: '919000011297',
-    adminPin: '1234',
+    adminPassword: 'SBN@Keesara#2026',
     groupInviteUrl: 'https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU',
     colonyName: 'Sri Balajee Nagar',
     colonyAddress: 'Survey No. 75 & 76, OPP Lead India Bharat Ratnas School, Ahmedguda, Keesara Mandal, Medchal Dist, Hyderabad - 501301',
@@ -370,8 +370,18 @@ Kindly review my house / plot details and approve adding me to the official Sri 
     const adminLoginModal = document.getElementById('adminLoginModal');
     const adminPortalModal = document.getElementById('adminPortalModal');
     const adminLoginForm = document.getElementById('adminLoginForm');
-    const adminPinInput = document.getElementById('adminPinInput');
+    const adminPasswordInput = document.getElementById('adminPasswordInput');
+    const btnToggleAdminPass = document.getElementById('btnToggleAdminPass');
     const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+
+    // Password show/hide toggle
+    if (btnToggleAdminPass && adminPasswordInput) {
+      btnToggleAdminPass.addEventListener('click', () => {
+        const isPass = adminPasswordInput.getAttribute('type') === 'password';
+        adminPasswordInput.setAttribute('type', isPass ? 'text' : 'password');
+        btnToggleAdminPass.textContent = isPass ? '🙈' : '👁️';
+      });
+    }
 
     // Admin Navigation Tabs
     const tabBtns = document.querySelectorAll('.admin-tab-btn');
@@ -396,7 +406,11 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         if (isLoggedIn) {
           openAdminDashboard();
         } else {
-          if (adminPinInput) adminPinInput.value = '';
+          if (adminPasswordInput) {
+            adminPasswordInput.value = '';
+            adminPasswordInput.setAttribute('type', 'password');
+            if (btnToggleAdminPass) btnToggleAdminPass.textContent = '👁️';
+          }
           openModal('adminLoginModal');
         }
       });
@@ -406,15 +420,16 @@ Kindly review my house / plot details and approve adding me to the official Sri 
       adminLoginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const settings = getSettings();
-        const enteredPin = adminPinInput.value.trim();
+        const enteredPassword = adminPasswordInput ? adminPasswordInput.value.trim() : '';
 
-        if (enteredPin === settings.adminPin || enteredPin === '1234') {
+        const validMaster = settings.adminPassword || 'SBN@Keesara#2026';
+        if (enteredPassword === validMaster) {
           sessionStorage.setItem(STORAGE_KEYS.ADMIN_SESSION, 'true');
           closeModal('adminLoginModal');
           openAdminDashboard();
           showToast('Welcome, Administrator! Access granted.', 'success');
         } else {
-          showToast('Invalid Admin PIN. Please check and retry.', 'error');
+          showToast('Invalid Administrator Password. Access denied.', 'error');
         }
       });
     }
@@ -449,9 +464,13 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         const settings = getSettings();
         settings.adminPhone = document.getElementById('settingAdminPhone').value.trim();
         settings.groupInviteUrl = document.getElementById('settingGroupUrl').value.trim();
-        const newPin = document.getElementById('settingNewPin').value.trim();
-        if (newPin) {
-          settings.adminPin = newPin;
+        const newPassword = document.getElementById('settingNewPassword').value.trim();
+        if (newPassword) {
+          if (newPassword.length < 8) {
+            showToast('Admin password must be at least 8 characters long.', 'error');
+            return;
+          }
+          settings.adminPassword = newPassword;
         }
         saveSettings(settings);
         showToast('Colony admin settings updated successfully!', 'success');
@@ -501,11 +520,11 @@ Kindly review my house / plot details and approve adding me to the official Sri 
     const settings = getSettings();
     const phoneInput = document.getElementById('settingAdminPhone');
     const urlInput = document.getElementById('settingGroupUrl');
-    const newPinInput = document.getElementById('settingNewPin');
+    const newPasswordInput = document.getElementById('settingNewPassword');
 
     if (phoneInput) phoneInput.value = settings.adminPhone;
     if (urlInput) urlInput.value = settings.groupInviteUrl;
-    if (newPinInput) newPinInput.value = '';
+    if (newPasswordInput) newPasswordInput.value = '';
   }
 
   function renderAdminRequests(searchTerm = '') {

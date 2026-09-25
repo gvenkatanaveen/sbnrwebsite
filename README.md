@@ -9,7 +9,7 @@ Official community portal and resident onboarding website for **Sri Balajee Naga
 ## 🌟 Key Features
 
 - **Resident Onboarding & Verification**: Seamless flow for house and plot owners to submit verification details to get approved and added to the official WhatsApp Community.
-- **Admin Approval Portal**: Integrated approval management (with PIN security `1234`) to review pending requests, approve with 1-click WhatsApp invite delivery, and export resident lists to CSV.
+- **Admin Approval Portal**: Integrated approval management (with secure administrator password authentication) to review pending requests, approve with 1-click WhatsApp invite delivery, and export resident lists to CSV.
 - **Community Notice Board**: Real-time notices for welfare meetings, civic announcements, and infrastructure updates.
 - **Colony Infrastructure Highlights**:
   - 💡 **LED Streetlighting** across colony roads
