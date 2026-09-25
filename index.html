@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sri Balajee Nagar | Official Resident Community & Welfare Association</title>
+  <meta name="description" content="Welcome to the official Sri Balajee Nagar resident community website. Join the resident WhatsApp group, view community notices, emergency contacts, and colony updates.">
+  <meta name="keywords" content="Sri Balajee Nagar, Sri Balaji Nagar, Resident Welfare Association, Colony Website, Community WhatsApp Group, Plot Verification">
+  <meta name="theme-color" content="#0a0e17">
+
+  <!-- OpenGraph / Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sri Balajee Nagar - Official Resident Community Portal">
+  <meta property="og:description" content="Join our official WhatsApp resident community, stay updated with colony notices, and connect with neighbors.">
+  <meta property="og:image" content="assets/sri_balajee_nagar_arch.jpg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       Top Animated Scrolling Announcement Marquee
+       ========================================================================= -->
+  <div class="test-mode-marquee-wrapper">
+    <div class="test-marquee-inner">
+      <div class="test-marquee-track">
+        <div class="marquee-item">
+          <span class="marquee-badge">⚠️ NOTICE</span>
+          <span>This website is in the testing phase, it will update with all relevant data soon.</span>
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-badge">🏡 HOUSE / PLOT OWNERS</span>
+          <span>Please click below to join the official WhatsApp group.</span>
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-badge">📍 SRI BALAJEE NAGAR</span>
+          <span>Survey No. 75 & 76, Keesara Mandal, Medchal Dist, Hyderabad - 501301.</span>
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-badge">⚠️ NOTICE</span>
+          <span>This website is in the testing phase, it will update with all relevant data soon.</span>
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-badge">🏡 HOUSE / PLOT OWNERS</span>
+          <span>Please click below to join the official WhatsApp group.</span>
+        </div>
+        <div class="marquee-item">
+          <span class="marquee-badge">📍 SRI BALAJEE NAGAR</span>
+          <span>Survey No. 75 & 76, Keesara Mandal, Medchal Dist, Hyderabad - 501301.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Navbar Header
+       ========================================================================= -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#home" class="brand-logo">
+        <div class="brand-emblem">ॐ</div>
+        <div class="brand-text">
+          <span class="brand-name">Sri Balajee Nagar</span>
+          <span class="brand-tagline">Resident Welfare Community</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#notices" class="nav-link">Notices</a></li>
+          <li><a href="#about" class="nav-link">About Colony</a></li>
+          <li><a href="#amenities" class="nav-link">Amenities</a></li>
+          <li><a href="#guidelines" class="nav-link">Guidelines</a></li>
+          <li><a href="#directory" class="nav-link">Emergency</a></li>
+          <li><a href="#gallery" class="nav-link">Gallery</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Admin Portal Trigger Button -->
+        <button type="button" class="btn-admin-nav trigger-admin-portal" id="btnAdminPortal" title="Admin Approval Dashboard">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span>Admin Portal</span>
+        </button>
+
+        <!-- Primary WhatsApp CTA in Header -->
+        <button type="button" class="btn-wa-header trigger-join-wa" id="btnHeaderJoinWa">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-.992-.055-.245-.077-.563-.191-1.026-.39-1.97-.849-3.242-2.844-3.34-2.977-.099-.133-.799-1.059-.799-2.021 0-.962.505-1.436.685-1.631.18-.195.394-.244.526-.244.13 0 .262.002.376.008.12.006.28-.045.438.334.164.394.558 1.36.608 1.46.05.101.082.219.016.351-.066.132-.099.215-.197.33-.099.115-.208.257-.297.345-.1.099-.204.207-.088.406.115.198.513.846 1.101 1.369.756.674 1.393.882 1.591.981.198.099.313.082.428-.05.115-.132.493-.574.625-.771.131-.197.263-.164.444-.098.18.066 1.144.54 1.341.638.197.099.329.148.378.23.05.083.05.478-.094.883z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.05 22l4.98-1.305A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.182c-1.628 0-3.144-.486-4.417-1.321l-.317-.209-2.962.777.791-2.888-.228-.363C4.945 14.869 4.364 13.486 4.364 12c0-4.21 3.426-7.636 7.636-7.636 4.211 0 7.636 3.426 7.636 7.636 0 4.21-3.425 7.636-7.636 7.636z"/></svg>
+          <span>House / Plot Owners: Join WhatsApp</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button type="button" class="btn-mobile-toggle" id="mobileMenuBtn" aria-label="Toggle navigation">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       Hero Section with Uploaded Archway Background
+       ========================================================================= -->
+  <main>
+    <section class="hero-section" id="home">
+      <div class="hero-background-wrapper">
+        <img src="assets/sri_balajee_nagar_arch.jpg" alt="Sri Balajee Nagar Entrance Arch" class="hero-bg-img" id="heroBgImage">
+        <div class="hero-overlay"></div>
+        <div class="hero-radial-glow"></div>
+      </div>
+
+      <div class="container hero-content-wrapper">
+        <!-- Hero Left Info -->
+        <div class="hero-text-content">
+          <div class="hero-badge-pill">
+            <span class="pulse-dot"></span>
+            <span>Official Community Portal (Test Mode)</span>
+          </div>
+
+          <h1 class="hero-title">
+            Welcome to <br>
+            <span class="highlight-gold">Sri Balajee Nagar</span>
+          </h1>
+
+          <p class="hero-description">
+            Welcome to the official Sri Balajee Nagar resident portal. <strong>House / Plot owners and residents:</strong> please click on the button below to update your Name, House / Plot Number, and Contact Details to get approved and added to the official community WhatsApp group.
+          </p>
+
+          <div class="hero-actions">
+            <!-- Main CTA: Triggers WhatsApp verification modal -->
+            <button type="button" class="btn-hero-primary trigger-join-wa" id="btnHeroJoinWa">
+              <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-.992-.055-.245-.077-.563-.191-1.026-.39-1.97-.849-3.242-2.844-3.34-2.977-.099-.133-.799-1.059-.799-2.021 0-.962.505-1.436.685-1.631.18-.195.394-.244.526-.244.13 0 .262.002.376.008.12.006.28-.045.438.334.164.394.558 1.36.608 1.46.05.101.082.219.016.351-.066.132-.099.215-.197.33-.099.115-.208.257-.297.345-.1.099-.204.207-.088.406.115.198.513.846 1.101 1.369.756.674 1.393.882 1.591.981.198.099.313.082.428-.05.115-.132.493-.574.625-.771.131-.197.263-.164.444-.098.18.066 1.144.54 1.341.638.197.099.329.148.378.23.05.083.05.478-.094.883z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.05 22l4.98-1.305A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.182c-1.628 0-3.144-.486-4.417-1.321l-.317-.209-2.962.777.791-2.888-.228-.363C4.945 14.869 4.364 13.486 4.364 12c0-4.21 3.426-7.636 7.636-7.636 4.211 0 7.636 3.426 7.636 7.636 0 4.21-3.425 7.636-7.636 7.636z"/></svg>
+              <span>House / Plot Owners: Click to Join WhatsApp Group</span>
+            </button>
+
+            <a href="#notices" class="btn-hero-secondary">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+              <span>View Notice Board</span>
+            </a>
+          </div>
+
+          <div class="hero-stats-row">
+            <div class="hero-stat-item">
+              <span class="hero-stat-value">70+</span>
+              <span class="hero-stat-label">Residents</span>
+            </div>
+            <div class="hero-stat-item">
+              <span class="hero-stat-value">Upcoming</span>
+              <span class="hero-stat-label">CCTV Surveillance</span>
+            </div>
+            <div class="hero-stat-item">
+              <span class="hero-stat-value">100%</span>
+              <span class="hero-stat-label">Verified Community</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right Quick Card -->
+        <div class="hero-card-widget">
+          <div class="hero-card-header">
+            <h2 class="hero-card-title">
+              <svg width="20" height="20" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              House / Plot Owner Onboarding
+            </h2>
+            <span class="hero-card-badge">Admin Approval</span>
+          </div>
+
+          <div class="hero-card-body">
+            <p><strong>House / Plot Owners:</strong> Click below to submit your Name and House / Plot Number with contact details. The invite request will come to the colony admin for approval to add you to the WhatsApp group.</p>
+            
+            <ul class="hero-card-features">
+              <li class="hero-card-feature-item">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Provide Resident Name & House / Plot Number</span>
+              </li>
+              <li class="hero-card-feature-item">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Admin Reviews & Approves Request</span>
+              </li>
+              <li class="hero-card-feature-item">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Receive Official WhatsApp Group Link</span>
+              </li>
+            </ul>
+
+            <button type="button" class="hero-card-cta-btn trigger-join-wa" id="btnCardRequestAccess">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+              <span>Click to Join WhatsApp Group</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Notice Board Section
+         ========================================================================= -->
+    <section class="notices-section" id="notices">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">Official Circulars</span>
+          <h2 class="section-title">Community Notice Board</h2>
+          <p class="section-subtitle">Stay updated with official announcements, maintenance schedules, and festive celebrations in Sri Balajee Nagar.</p>
+        </div>
+
+        <div class="notice-filter-pills">
+          <button type="button" class="filter-btn active" data-filter="all">All Notices</button>
+          <button type="button" class="filter-btn" data-filter="urgent">Urgent & Alerts</button>
+          <button type="button" class="filter-btn" data-filter="event">Community Events</button>
+          <button type="button" class="filter-btn" data-filter="general">General Updates</button>
+        </div>
+
+        <div class="notices-grid" id="noticesGrid">
+          <!-- Dynamically Rendered by js/app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         About Colony Section
+         ========================================================================= -->
+    <section class="about-section" id="about">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-image-wrapper">
+            <img src="assets/sri_balajee_nagar_arch.jpg" alt="Sri Balajee Nagar Entrance View" class="about-img">
+            <div class="about-floating-card">
+              <div class="about-floating-icon">🏛️</div>
+              <div>
+                <h4 style="font-size: 1.1rem; color: #ffffff;">Sri Balajee Nagar Arch</h4>
+                <p style="font-size: 0.85rem; color: #cbd5e1;">Grand landmark entrance leading into our residential township.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-content">
+            <span class="section-badge">About Our Neighborhood</span>
+            <h3>A Peaceful Haven Built for Harmonious Living</h3>
+            <p>
+              Sri Balajee Nagar is a well-planned, family-centric residential colony with wide concrete roads, LED street lighting, and active community coordination.
+            </p>
+            <p>
+              Our Resident Welfare Association (RWA) works diligently to maintain high civic standards, clean water supply, efficient underground drainage, and a warm neighborly bond among all resident families.
+            </p>
+
+            <ul class="about-highlights-list">
+              <li class="about-highlight-item">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Grand Landmark Archway</span>
+              </li>
+              <li class="about-highlight-item">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>CCTV Surveillance (Upcoming)</span>
+              </li>
+              <li class="about-highlight-item">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Mission Bhagiratha / Manjeera Water Supply</span>
+              </li>
+              <li class="about-highlight-item">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Active Resident Association</span>
+              </li>
+            </ul>
+
+            <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: var(--radius-md); font-size: 0.9rem; color: #e2e8f0; display: flex; align-items: flex-start; gap: 0.75rem;">
+              <span style="font-size: 1.35rem; line-height: 1;">📍</span>
+              <div>
+                <strong style="color: var(--accent-gold-light); display: block; margin-bottom: 0.2rem;">Official Colony Location:</strong>
+                <span>Survey No. 75 & 76, OPP. Lead India Bharat Ratnas School, Ahmedguda, Keesara Mandal, Medchal Dist, Hyderabad - 501301</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Amenities & Infrastructure
+         ========================================================================= -->
+    <section class="amenities-section" id="amenities">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">Infrastructure & Amenities</span>
+          <h2 class="section-title">Colony Facilities & Highlights</h2>
+          <p class="section-subtitle">Sri Balajee Nagar offers essential infrastructure designed to provide residents with comfort, connectivity, and clean living.</p>
+        </div>
+
+        <div class="amenities-grid">
+          <div class="amenity-card">
+            <div class="amenity-icon-box">📹</div>
+            <h4>CCTV Surveillance (Upcoming)</h4>
+            <p>Planned upcoming CCTV surveillance system for main avenues and road junctions across the colony.</p>
+          </div>
+
+          <div class="amenity-card">
+            <div class="amenity-icon-box">🛣️</div>
+            <h4>Wide CC Roads & Drainage</h4>
+            <p>Well-paved cement concrete internal roads with underground drainage network and clean street layout.</p>
+          </div>
+
+          <div class="amenity-card">
+            <div class="amenity-icon-box">💡</div>
+            <h4>LED Streetlights</h4>
+            <p>Automatic energy-efficient LED street lamps ensuring bright, safe illumination throughout the colony avenues.</p>
+          </div>
+
+          <div class="amenity-card">
+            <div class="amenity-icon-box">🚰</div>
+            <h4>Mission Bhagiratha / Manjeera Water</h4>
+            <p>Potable water supply provided directly to resident plots through the official Mission Bhagiratha / Manjeera water pipeline.</p>
+          </div>
+
+          <div class="amenity-card">
+            <div class="amenity-icon-box">🏛️</div>
+            <h4>Community Hall</h4>
+            <p>Dedicated community hall for resident general body meetings, welfare discussions, and festive gatherings.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Community Guidelines & Etiquette
+         ========================================================================= -->
+    <section class="guidelines-section" id="guidelines">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">Community Living</span>
+          <h2 class="section-title">Colony Guidelines & Etiquette</h2>
+          <p class="section-subtitle">To ensure harmony and peaceful coexistence, all residents and visitors are requested to follow these guidelines.</p>
+        </div>
+
+        <div class="guidelines-grid">
+          <div class="guideline-card">
+            <span class="guideline-num">01</span>
+            <div class="guideline-text">
+              <h4>Speed Limit (20 km/h)</h4>
+              <p>Drive cautiously inside colony roads to ensure safety of children and elderly residents. Avoid honking.</p>
+            </div>
+          </div>
+
+          <div class="guideline-card">
+            <span class="guideline-num">02</span>
+            <div class="guideline-text">
+              <h4>Waste Segregation</h4>
+              <p>Segregate wet and dry garbage. Door-to-door sanitation vehicles collect waste daily between 7 AM and 9 AM.</p>
+            </div>
+          </div>
+
+          <div class="guideline-card">
+            <span class="guideline-num">03</span>
+            <div class="guideline-text">
+              <h4>Quiet Hours (10 PM - 6 AM)</h4>
+              <p>Maintain low sound levels during night hours. Avoid high-volume music and late-night loud machinery.</p>
+            </div>
+          </div>
+
+          <div class="guideline-card">
+            <span class="guideline-num">04</span>
+            <div class="guideline-text">
+              <h4>Designated Parking</h4>
+              <p>Park vehicles inside plot premises or along specified curbs without blocking road turnings or neighbor gates.</p>
+            </div>
+          </div>
+
+          <div class="guideline-card">
+            <span class="guideline-num">05</span>
+            <div class="guideline-text">
+              <h4>Construction Etiquette</h4>
+              <p>Plot construction materials must not encroach main roads. Construction work is permitted from 8 AM to 6 PM only.</p>
+            </div>
+          </div>
+
+          <div class="guideline-card">
+            <span class="guideline-num">06</span>
+            <div class="guideline-text">
+              <h4>Pet Responsibility</h4>
+              <p>Always walk pets on a leash and ensure common walking areas and neighbor compound fronts are kept clean.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Emergency Contacts & Directory
+         ========================================================================= -->
+    <section class="directory-section" id="directory">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">Association & Support</span>
+          <h2 class="section-title">Community Support & Helpdesk</h2>
+          <p class="section-subtitle">Official administrative channels and utility services for Sri Balajee Nagar residents.</p>
+        </div>
+
+        <div class="directory-grid">
+          <div class="contact-card">
+            <div class="contact-info-top">
+              <div class="contact-avatar">🏛️</div>
+              <div>
+                <h4 class="contact-name">Colony Archway Desk</h4>
+                <span class="contact-role">Main Entrance Arch</span>
+              </div>
+            </div>
+            <div class="contact-phone-number" style="font-size: 0.95rem; color: #94a3b8; font-family: inherit;">Sri Balajee Nagar Entrance</div>
+            <div class="contact-actions">
+              <button type="button" class="btn-contact-call trigger-join-wa" style="width: 100%; grid-column: 1 / -1;">💬 Connect via WhatsApp</button>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-info-top">
+              <div class="contact-avatar">🏛️</div>
+              <div>
+                <h4 class="contact-name">RWA President Desk</h4>
+                <span class="contact-role">Executive Committee</span>
+              </div>
+            </div>
+            <div class="contact-phone-number" style="font-size: 0.95rem; color: #94a3b8; font-family: inherit;">Resident Welfare Association</div>
+            <div class="contact-actions">
+              <button type="button" class="btn-contact-call trigger-join-wa" style="width: 100%; grid-column: 1 / -1;">💬 Connect via WhatsApp</button>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-info-top">
+              <div class="contact-avatar">📋</div>
+              <div>
+                <h4 class="contact-name">General Secretary Desk</h4>
+                <span class="contact-role">Resident Welfare & Grievance</span>
+              </div>
+            </div>
+            <div class="contact-phone-number" style="font-size: 0.95rem; color: #94a3b8; font-family: inherit;">Administration & Operations</div>
+            <div class="contact-actions">
+              <button type="button" class="btn-contact-call trigger-join-wa" style="width: 100%; grid-column: 1 / -1;">💬 Connect via WhatsApp</button>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-info-top">
+              <div class="contact-avatar">⚡</div>
+              <div>
+                <h4 class="contact-name">Maintenance & Utilities</h4>
+                <span class="contact-role">Water & Lighting Cell</span>
+              </div>
+            </div>
+            <div class="contact-phone-number" style="font-size: 0.95rem; color: #94a3b8; font-family: inherit;">Colony Maintenance Support</div>
+            <div class="contact-actions">
+              <button type="button" class="btn-contact-call trigger-join-wa" style="width: 100%; grid-column: 1 / -1;">💬 Connect via WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Photo Gallery Section
+         ========================================================================= -->
+    <section class="gallery-section" id="gallery">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">Landmark of Sri Balajee Nagar</span>
+          <h2 class="section-title">Community Photo Gallery</h2>
+          <p class="section-subtitle">Glimpse of our iconic grand entrance archway.</p>
+        </div>
+
+        <div class="gallery-grid" style="grid-template-columns: minmax(auto, 800px); justify-content: center;">
+          <div class="gallery-item" style="aspect-ratio: 16/9; max-height: 480px;">
+            <img src="assets/sri_balajee_nagar_arch.jpg" alt="Grand Entrance Arch of Sri Balajee Nagar">
+            <div class="gallery-caption">
+              <p>Grand Archway & Entrance of Sri Balajee Nagar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       Footer
+       ========================================================================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-logo" style="margin-bottom: 0.75rem;">
+            <div class="brand-emblem">ॐ</div>
+            <div class="brand-text">
+              <span class="brand-name">Sri Balajee Nagar</span>
+              <span class="brand-tagline">Resident Welfare Association</span>
+            </div>
+          </div>
+          <p>A thriving, harmonious gated colony dedicated to safety, cleanliness, and neighborly warmth.</p>
+          
+          <div class="colony-address-box" style="margin-top: 1.25rem; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; background: rgba(255, 255, 255, 0.04); padding: 0.85rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <div style="font-weight: 700; color: var(--accent-gold-light); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>📍</span> Official Colony Address:
+            </div>
+            <div>Survey No. 75 & 76, OPP. Lead India Bharat Ratnas School, Ahmedguda, Keesara Mandal, Medchal Dist, Hyderabad - 501301</div>
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#notices">Notice Board</a></li>
+            <li><a href="#about">About Colony</a></li>
+            <li><a href="#amenities">Amenities</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-col">
+          <h4>Residents</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="trigger-join-wa">Join WhatsApp</a></li>
+            <li><a href="#guidelines">Guidelines</a></li>
+            <li><a href="#directory">Emergency Contacts</a></li>
+            <li><a href="#" class="trigger-admin-portal">Admin Login</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-col">
+          <h4>Official Community</h4>
+          <p style="font-size: 0.875rem; margin-bottom: 1rem; color: var(--text-secondary);">House / Plot owners and residents are encouraged to register their house / plot details for community updates and association notices.</p>
+          <button type="button" class="btn-wa-header trigger-join-wa" style="width: 100%; justify-content: center;">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.05 22l4.98-1.305A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+            <span>House / Plot Owners: Request Group Invite</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Sri Balajee Nagar Resident Welfare Association. All rights reserved.</div>
+        <div style="font-size: 0.875rem; color: #e2e8f0; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <span>Website built by <strong style="color: #ffffff;">Naveen G Venkata</strong></span>
+          <span>&bull;</span>
+          <span>Contact: <a href="tel:+919000011297" style="color: var(--accent-gold-light); font-weight: 700; text-decoration: underline;">+91 9000011297</a></span>
+          <span>|</span>
+          <a href="https://wa.me/919000011297?text=Hello%20Naveen,%20regarding%20Sri%20Balajee%20Nagar%20Website" target="_blank" style="color: #25D366; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">
+            <span>💬 Chat on WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       Floating WhatsApp CTA Button
+       ========================================================================= -->
+  <button type="button" class="floating-wa-btn trigger-join-wa" id="btnFloatingWa" aria-label="Join WhatsApp Group">
+    <div class="floating-wa-pulse"></div>
+    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.634.055-.992-.055-.245-.077-.563-.191-1.026-.39-1.97-.849-3.242-2.844-3.34-2.977-.099-.133-.799-1.059-.799-2.021 0-.962.505-1.436.685-1.631.18-.195.394-.244.526-.244.13 0 .262.002.376.008.12.006.28-.045.438.334.164.394.558 1.36.608 1.46.05.101.082.219.016.351-.066.132-.099.215-.197.33-.099.115-.208.257-.297.345-.1.099-.204.207-.088.406.115.198.513.846 1.101 1.369.756.674 1.393.882 1.591.981.198.099.313.082.428-.05.115-.132.493-.574.625-.771.131-.197.263-.164.444-.098.18.066 1.144.54 1.341.638.197.099.329.148.378.23.05.083.05.478-.094.883z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.05 22l4.98-1.305A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.182c-1.628 0-3.144-.486-4.417-1.321l-.317-.209-2.962.777.791-2.888-.228-.363C4.945 14.869 4.364 13.486 4.364 12c0-4.21 3.426-7.636 7.636-7.636 4.211 0 7.636 3.426 7.636 7.636 0 4.21-3.425 7.636-7.636 7.636z"/></svg>
+    <span>Join WhatsApp</span>
+  </button>
+
+  <!-- =========================================================================
+       MODAL 1: Resident WhatsApp Group Join Request
+       ========================================================================= -->
+  <div class="modal-overlay" id="joinGroupModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-icon-badge">💬</div>
+          <div>
+            <h3 class="modal-title">Join Resident WhatsApp Group</h3>
+            <span class="modal-subtitle">Sri Balajee Nagar Verification</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" data-close-modal aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Form Step -->
+        <div id="joinFormStep">
+          <div class="form-disclaimer">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 16v-4m0-4h.01"/></svg>
+            <span>Please provide your Name and House / Plot number. The request will be sent to the Colony Admin for approval before adding you to the group.</span>
+          </div>
+
+          <form id="joinGroupForm">
+            <div class="form-group">
+              <label for="reqFullName" class="form-label">Full Name <span class="req">*</span></label>
+              <input type="text" id="reqFullName" class="form-input" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="reqPlotNumber" class="form-label">House / Plot Number <span class="req">*</span></label>
+                <input type="text" id="reqPlotNumber" class="form-input" placeholder="e.g. Plot 45, Road 2" required>
+              </div>
+
+              <div class="form-group">
+                <label for="reqResidentType" class="form-label">Resident Status <span class="req">*</span></label>
+                <select id="reqResidentType" class="form-select" required>
+                  <option value="House / Plot Owner (Residing)" selected>House / Plot Owner (Residing)</option>
+                  <option value="Tenant">Tenant</option>
+                  <option value="House / Plot Owner (Constructing / Open Plot)">House / Plot Owner (Constructing / Open Plot)</option>
+                  <option value="Family Member">Family Member</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reqPhone" class="form-label">WhatsApp Mobile Number <span class="req">*</span></label>
+              <div class="input-phone-group">
+                <span class="phone-prefix">+91</span>
+                <input type="tel" id="reqPhone" class="form-input" placeholder="9876543210" pattern="[0-9]{10}" maxlength="10" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reqEmail" class="form-label">Email Address (Optional)</label>
+              <input type="email" id="reqEmail" class="form-input" placeholder="e.g. name@example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="reqNotes" class="form-label">Additional Notes / Reference (Optional)</label>
+              <textarea id="reqNotes" class="form-textarea" rows="2" placeholder="e.g. Resident since 2021, nearby landmark..."></textarea>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn-submit-request" id="btnSubmitJoinReq">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.05 22l4.98-1.305A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+                <span>Submit Verification & Request Invite</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Success Step -->
+        <div id="joinSuccessStep" style="display: none;">
+          <div class="modal-success-box">
+            <div class="success-check-icon">✓</div>
+            <h3 class="success-title">Request Submitted Successfully!</h3>
+            <p class="success-desc">
+              Your house / plot verification details have been recorded in the Sri Balajee Nagar approval register.
+            </p>
+
+            <div class="success-summary-card">
+              <div class="success-summary-row">
+                <span class="success-summary-label">Reference ID:</span>
+                <span class="success-summary-val" id="successRefId">-</span>
+              </div>
+              <div class="success-summary-row">
+                <span class="success-summary-label">Resident Name:</span>
+                <span class="success-summary-val" id="successName">-</span>
+              </div>
+              <div class="success-summary-row">
+                <span class="success-summary-label">House / Plot Number:</span>
+                <span class="success-summary-val" id="successPlot">-</span>
+              </div>
+              <div class="success-summary-row">
+                <span class="success-summary-label">Phone:</span>
+                <span class="success-summary-val" id="successPhone">-</span>
+              </div>
+              <div class="success-summary-row">
+                <span class="success-summary-label">Category:</span>
+                <span class="success-summary-val" id="successType">-</span>
+              </div>
+            </div>
+
+            <!-- Direct WhatsApp Message to Admin -->
+            <button type="button" class="btn-direct-wa-ping" id="btnSendDirectWa" style="width: 100%;">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.05 22l4.98-1.305A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+              <span>Send Request Directly to Admin WhatsApp</span>
+            </button>
+
+            <button type="button" class="btn-admin-tool" data-close-modal style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+              Close Window
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: Admin Login
+       ========================================================================= -->
+  <div class="modal-overlay" id="adminLoginModal">
+    <div class="modal-container" style="max-width: 420px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-icon-badge" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🔐</div>
+          <div>
+            <h3 class="modal-title">Admin Access</h3>
+            <span class="modal-subtitle">Enter Security PIN</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" data-close-modal>✕</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <label for="adminPinInput" class="form-label">Administrator PIN <span class="req">*</span></label>
+            <input type="password" id="adminPinInput" class="form-input" placeholder="Default PIN: 1234" maxlength="10" required autofocus>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">Default access PIN is <strong style="color: var(--accent-gold);">1234</strong> (can be updated inside settings).</p>
+          </div>
+
+          <div class="modal-footer" style="padding-top: 0.75rem;">
+            <button type="submit" class="btn-hero-primary" style="width: 100%; justify-content: center;">
+              Login to Admin Portal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 3: Admin Approval & Management Dashboard
+       ========================================================================= -->
+  <div class="modal-overlay" id="adminPortalModal">
+    <div class="modal-container admin-modal-container">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="modal-icon-badge" style="background: linear-gradient(135deg, #f59e0b, #d97706);">⚙️</div>
+          <div>
+            <h3 class="modal-title">Sri Balajee Nagar - Admin Management Portal</h3>
+            <span class="modal-subtitle">Review Resident Requests, Approve WhatsApp Access, & Manage Notices</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <button type="button" class="btn-admin-tool" id="adminLogoutBtn" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;">Logout</button>
+          <button type="button" class="btn-modal-close" data-close-modal>✕</button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Admin Tabs -->
+        <div class="admin-tabs">
+          <button type="button" class="admin-tab-btn active" data-tab="tabRequests">
+            <span>Resident Requests</span>
+            <span class="badge-count" id="adminPendingCount">0</span>
+          </button>
+          <button type="button" class="admin-tab-btn" data-tab="tabAddNotice">
+            <span>Post Notice</span>
+          </button>
+          <button type="button" class="admin-tab-btn" data-tab="tabSettings">
+            <span>Admin Settings</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: Resident Join Requests -->
+        <div class="admin-tab-pane" id="tabRequests">
+          <div class="admin-toolbar">
+            <input type="text" id="adminSearchRequests" class="admin-search-input" placeholder="🔍 Search by House / Plot, Name, Phone...">
+            
+            <div class="admin-actions-bar">
+              <button type="button" class="btn-admin-tool" id="btnExportRequests">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Export CSV</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ref ID</th>
+                  <th>Resident</th>
+                  <th>House / Plot No</th>
+                  <th>Phone Number</th>
+                  <th>Status</th>
+                  <th>Approval Action</th>
+                </tr>
+              </thead>
+              <tbody id="adminRequestsTbody">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: Post Community Notice -->
+        <div class="admin-tab-pane" id="tabAddNotice" style="display: none;">
+          <form id="adminNewNoticeForm">
+            <div class="form-group">
+              <label for="noticeTitleInput" class="form-label">Notice Title <span class="req">*</span></label>
+              <input type="text" id="noticeTitleInput" class="form-input" placeholder="e.g. Monthly Colony Maintenance & Water Pipeline Schedule" required>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="noticeCatInput" class="form-label">Category</label>
+                <select id="noticeCatInput" class="form-select">
+                  <option value="general">General Update</option>
+                  <option value="urgent">Urgent & Alerts</option>
+                  <option value="event">Community Event / Festival</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="noticeAuthorInput" class="form-label">Issued By</label>
+                <input type="text" id="noticeAuthorInput" class="form-input" placeholder="e.g. RWA Executive Committee">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="noticeContentInput" class="form-label">Notice Details <span class="req">*</span></label>
+              <textarea id="noticeContentInput" class="form-textarea" rows="4" placeholder="Type official notice circular message here..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-hero-primary" style="margin-top: 1rem;">
+              📢 Publish Announcement
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 3: Admin & WhatsApp Settings -->
+        <div class="admin-tab-pane" id="tabSettings" style="display: none;">
+          <form id="adminSettingsForm">
+            <div class="form-group">
+              <label for="settingAdminPhone" class="form-label">Admin WhatsApp Number (For Incoming Requests) <span class="req">*</span></label>
+              <input type="text" id="settingAdminPhone" class="form-input" placeholder="919000011297" value="919000011297" required>
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">Enter country code without '+' (e.g. 919000011297 for India).</p>
+            </div>
+
+            <div class="form-group">
+              <label for="settingGroupUrl" class="form-label">Official WhatsApp Group Invite Link <span class="req">*</span></label>
+              <input type="url" id="settingGroupUrl" class="form-input" placeholder="https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU" value="https://chat.whatsapp.com/IsVuuxNg49gIJYPj8uIZAU" required>
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">This invite link will be sent automatically to residents when you click 'Approve & Send' in the approval table.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="settingNewPin" class="form-label">Change Admin PIN (Optional)</label>
+              <input type="password" id="settingNewPin" class="form-input" placeholder="Enter new 4-digit PIN to update">
+            </div>
+
+            <button type="submit" class="btn-hero-primary" style="margin-top: 1rem;">
+              💾 Save Portal Settings
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 4: Gallery Lightbox Modal
+       ========================================================================= -->
+  <div class="modal-overlay" id="lightboxModal">
+    <div class="modal-container" style="max-width: 800px; background: rgba(8, 12, 20, 0.95);">
+      <div class="modal-header" style="border: none; padding-bottom: 0.5rem;">
+        <span id="lightboxCaption" style="font-weight: 700; color: #ffffff;">Sri Balajee Nagar</span>
+        <button type="button" class="btn-modal-close" data-close-modal>✕</button>
+      </div>
+      <div class="modal-body" style="padding-top: 0.5rem;">
+        <img id="lightboxImg" src="" alt="Enlarged View" style="width: 100%; border-radius: var(--radius-md); max-height: 70vh; object-fit: contain;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Script -->
+  <script src="js/app.js"></script>
+</body>
+</html>
