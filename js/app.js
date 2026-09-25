@@ -302,9 +302,9 @@ Kindly review my house / plot details and approve adding me to the official Sri 
           };
         }
 
-        // Auto-launch WhatsApp group link to join directly
+        // Auto-launch WhatsApp directly to Admin Naveen (+91 9000011297) with verification request
         try {
-          window.open(settings.groupInviteUrl, '_blank');
+          window.open(waUrl, '_blank');
         } catch (err) {
           console.warn('Popup blocked, accessible via button', err);
         }
@@ -313,7 +313,7 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         formStep.style.display = 'none';
         successStep.style.display = 'block';
 
-        showToast(`Details recorded in admin portal (Ref ID: #${refNo})!`, 'success');
+        showToast(`Request #${refNo} generated! WhatsApp opened to send details to Colony Admin.`, 'success');
 
         // Refresh admin table if admin view is open
         renderAdminRequests();
@@ -473,19 +473,52 @@ Kindly review my house / plot details and approve adding me to the official Sri 
       exportBtn.addEventListener('click', exportRequestsToCSV);
     }
 
-    // Clear All Requests
-    const clearBtn = document.getElementById('btnClearAllRequests');
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        const requests = getRequests();
-        if (requests.length === 0) {
-          showToast('No resident records to clear.', 'info');
-          return;
+    // Select All & Delete Selected Checkbox Handler
+    const thSelectAll = document.getElementById('thSelectAllRequests');
+    const deleteSelectedBtn = document.getElementById('btnDeleteSelectedRequests');
+    const deleteSelectedBtnText = document.getElementById('deleteSelectedBtnText');
+
+    window.sbnrPortalUpdateSelected = function () {
+      const checkedBoxes = document.querySelectorAll('.req-row-checkbox:checked');
+      const count = checkedBoxes.length;
+      if (deleteSelectedBtn) {
+        if (count > 0) {
+          deleteSelectedBtn.style.display = 'inline-flex';
+          if (deleteSelectedBtnText) deleteSelectedBtnText.textContent = `Delete Selected (${count})`;
+        } else {
+          deleteSelectedBtn.style.display = 'none';
         }
-        if (!confirm('Are you sure you want to permanently clear ALL resident records from the portal?')) return;
-        saveRequests([]);
+      }
+      if (thSelectAll) {
+        const allBoxes = document.querySelectorAll('.req-row-checkbox');
+        thSelectAll.checked = allBoxes.length > 0 && checkedBoxes.length === allBoxes.length;
+      }
+    };
+
+    if (thSelectAll) {
+      thSelectAll.addEventListener('change', () => {
+        const allBoxes = document.querySelectorAll('.req-row-checkbox');
+        allBoxes.forEach(cb => {
+          cb.checked = thSelectAll.checked;
+        });
+        if (window.sbnrPortalUpdateSelected) window.sbnrPortalUpdateSelected();
+      });
+    }
+
+    if (deleteSelectedBtn) {
+      deleteSelectedBtn.addEventListener('click', () => {
+        const checkedBoxes = document.querySelectorAll('.req-row-checkbox:checked');
+        const count = checkedBoxes.length;
+        if (count === 0) return;
+
+        if (!confirm(`Are you sure you want to permanently delete the ${count} selected resident record(s)?`)) return;
+
+        const selectedIds = Array.from(checkedBoxes).map(cb => cb.getAttribute('data-id'));
+        const requests = getRequests();
+        const remaining = requests.filter(r => !selectedIds.includes(r.id));
+        saveRequests(remaining);
         renderAdminRequests();
-        showToast('All resident records have been cleared.', 'success');
+        showToast(`${count} resident record(s) deleted successfully.`, 'info');
       });
     }
 
@@ -686,11 +719,12 @@ _Warm regards,_
     if (filtered.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+          <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
             No resident requests found matching your search.
           </td>
         </tr>
       `;
+      if (window.sbnrPortalUpdateSelected) window.sbnrPortalUpdateSelected();
       return;
     }
 
@@ -700,6 +734,9 @@ _Warm regards,_
 
       return `
         <tr>
+          <td style="text-align: center;">
+            <input type="checkbox" class="req-row-checkbox" data-id="${escapeHtml(req.id)}" onchange="window.sbnrPortalUpdateSelected()" style="cursor: pointer;">
+          </td>
           <td>
             <span style="font-family: monospace; font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(req.id)}</span>
           </td>
@@ -718,8 +755,8 @@ _Warm regards,_
           <td>
             <span class="status-badge ${req.status}">${req.status}</span>
           </td>
-          <td>
-            <div class="admin-row-actions">
+          <td style="text-align: right;">
+            <div class="admin-row-actions" style="justify-content: flex-end;">
               ${isPending ? `
                 <button class="btn-action-approve" onclick="window.sbnrPortal.approveResident('${req.id}')" title="Approve & Send WhatsApp Invite">
                   <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -736,14 +773,17 @@ _Warm regards,_
               ` : `
                 <span style="font-size: 0.75rem; color: #94a3b8;">Archived</span>
               `}
-              <button class="btn-action-delete" onclick="window.sbnrPortal.deleteResident('${req.id}')" title="Delete Request #${req.id}">
+              <button class="btn-action-delete" onclick="window.sbnrPortal.deleteResident('${req.id}')" title="Delete specific entry #${req.id}" style="display: inline-flex; align-items: center; gap: 0.25rem;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                <span>Delete</span>
               </button>
             </div>
           </td>
         </tr>
       `;
     }).join('');
+
+    if (window.sbnrPortalUpdateSelected) window.sbnrPortalUpdateSelected();
   }
 
   // Global Exposed Functions for Table Button Actions
