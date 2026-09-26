@@ -1,6 +1,6 @@
 /**
  * Sri Balajee Nagar - Community Portal Application Script
- * Features: WhatsApp Community Onboarding, Multi-step Admin Approval, Notices, Cloud Sync & Interactive Directory
+ * Features: WhatsApp Community Onboarding, Multi-step Admin Approval, Resident Edit, Bulk Add, Notices, Cloud Sync & Interactive Directory
  */
 
 (function () {
@@ -557,6 +557,28 @@ Kindly review my house / plot details and approve adding me to the official Sri 
       });
     }
 
+    // Sub-tab toggles in Add Resident pane
+    const btnSubTabSingle = document.getElementById('btnSubTabSingle');
+    const btnSubTabBulk = document.getElementById('btnSubTabBulk');
+    const paneSingleResident = document.getElementById('paneSingleResident');
+    const paneBulkResidents = document.getElementById('paneBulkResidents');
+
+    if (btnSubTabSingle && btnSubTabBulk) {
+      btnSubTabSingle.addEventListener('click', () => {
+        btnSubTabSingle.classList.add('active');
+        btnSubTabBulk.classList.remove('active');
+        if (paneSingleResident) paneSingleResident.style.display = 'block';
+        if (paneBulkResidents) paneBulkResidents.style.display = 'none';
+      });
+
+      btnSubTabBulk.addEventListener('click', () => {
+        btnSubTabBulk.classList.add('active');
+        btnSubTabSingle.classList.remove('active');
+        if (paneSingleResident) paneSingleResident.style.display = 'none';
+        if (paneBulkResidents) paneBulkResidents.style.display = 'block';
+      });
+    }
+
     // Admin Navigation Tabs
     const tabBtns = document.querySelectorAll('.admin-tab-btn');
     const tabPanes = document.querySelectorAll('.admin-tab-pane');
@@ -761,7 +783,7 @@ Kindly review my house / plot details and approve adding me to the official Sri 
       });
     }
 
-    // Manual Add Resident Form Handler
+    // Single Manual Add Resident Form Handler
     const addResidentForm = document.getElementById('adminAddResidentForm');
     if (addResidentForm) {
       addResidentForm.addEventListener('submit', (e) => {
@@ -771,8 +793,9 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         const plotNumber = document.getElementById('adminManualPlot').value.trim();
         let phone = document.getElementById('adminManualPhone').value.trim().replace(/\D/g, '');
         const residentType = document.getElementById('adminManualType').value;
-        const email = document.getElementById('adminManualEmail').value.trim();
+        const customRefId = document.getElementById('adminManualRefId') ? document.getElementById('adminManualRefId').value.trim() : '';
         const initialStatus = document.getElementById('adminManualInitialStatus').value;
+        const email = document.getElementById('adminManualEmail').value.trim();
         const notes = document.getElementById('adminManualNotes').value.trim();
 
         if (!fullName || !plotNumber || !phone) {
@@ -786,10 +809,12 @@ Kindly review my house / plot details and approve adding me to the official Sri 
         }
 
         const requests = getRequests();
-        let refNo;
-        do {
-          refNo = 'SBN-' + Math.floor(1000 + Math.random() * 9000);
-        } while (requests.some(r => r.id === refNo));
+        let refNo = customRefId ? (customRefId.startsWith('SBN-') ? customRefId : 'SBN-' + customRefId) : '';
+        if (!refNo || requests.some(r => r.id === refNo)) {
+          do {
+            refNo = 'SBN-' + Math.floor(1000 + Math.random() * 9000);
+          } while (requests.some(r => r.id === refNo));
+        }
 
         const newResident = {
           id: refNo,
@@ -848,6 +873,151 @@ _Warm regards,_
         if (reqPane) reqPane.style.display = 'block';
 
         renderAdminRequests();
+      });
+    }
+
+    // Bulk Add Multiple Residents Form Handler
+    const bulkAddForm = document.getElementById('adminBulkAddForm');
+    if (bulkAddForm) {
+      bulkAddForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const textarea = document.getElementById('adminBulkTextarea');
+        const text = textarea ? textarea.value.trim() : '';
+        const defaultStatus = document.getElementById('adminBulkDefaultStatus').value || 'approved';
+        const defaultType = document.getElementById('adminBulkDefaultType').value || 'House / Plot Owner (Residing)';
+
+        if (!text) {
+          showToast('Please paste resident entries.', 'error');
+          return;
+        }
+
+        const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+        const requests = getRequests();
+        let addedCount = 0;
+
+        lines.forEach(line => {
+          let parts = line.split(/[,\t|]/).map(p => p.trim());
+          let name = '', plot = '', phone = '', type = defaultType, status = defaultStatus;
+
+          if (parts.length >= 3) {
+            name = parts[0];
+            plot = parts[1];
+            phone = parts[2].replace(/\D/g, '');
+            if (parts.length >= 4 && parts[3]) {
+              type = parts[3];
+            }
+          } else if (parts.length === 2) {
+            name = parts[0];
+            plot = parts[1];
+          } else {
+            const match = line.match(/^([^,]+)[,\s]+(Plot[^\d]*\d+[^,]*)[,\s]+(\d{10})/i);
+            if (match) {
+              name = match[1].trim();
+              plot = match[2].trim();
+              phone = match[3].trim();
+            } else {
+              name = line;
+              plot = 'Plot Verification';
+            }
+          }
+
+          if (phone.startsWith('91') && phone.length === 12) {
+            phone = phone.slice(2);
+          }
+
+          if (name || plot || phone) {
+            let refNo;
+            do {
+              refNo = 'SBN-' + Math.floor(1000 + Math.random() * 9000);
+            } while (requests.some(r => r.id === refNo));
+
+            requests.unshift({
+              id: refNo,
+              fullName: name || 'Resident',
+              plotNumber: plot || 'Plot Verification',
+              phone: phone || '',
+              residentType: type,
+              email: '',
+              notes: 'Bulk imported by Admin',
+              status: status,
+              timestamp: new Date().toISOString(),
+              approvedAt: status === 'approved' ? new Date().toISOString() : null
+            });
+            addedCount++;
+          }
+        });
+
+        if (addedCount > 0) {
+          saveRequests(requests);
+          pushRequestsToCloud(requests);
+          bulkAddForm.reset();
+          showToast(`Successfully added ${addedCount} resident records!`, 'success');
+
+          // Switch back to requests tab
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabPanes.forEach(p => p.style.display = 'none');
+
+          const reqTabBtn = document.querySelector('.admin-tab-btn[data-tab="tabRequests"]');
+          if (reqTabBtn) reqTabBtn.classList.add('active');
+
+          const reqPane = document.getElementById('tabRequests');
+          if (reqPane) reqPane.style.display = 'block';
+
+          renderAdminRequests();
+        } else {
+          showToast('No valid resident records could be parsed.', 'error');
+        }
+      });
+    }
+
+    // Edit Resident Form Handler
+    const editResidentForm = document.getElementById('adminEditResidentForm');
+    if (editResidentForm) {
+      editResidentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const refId = document.getElementById('editResidentRefId').value;
+        const fullName = document.getElementById('editResidentName').value.trim();
+        const plotNumber = document.getElementById('editResidentPlot').value.trim();
+        let phone = document.getElementById('editResidentPhone').value.trim().replace(/\D/g, '');
+        const residentType = document.getElementById('editResidentType').value;
+        const status = document.getElementById('editResidentStatus').value;
+        const email = document.getElementById('editResidentEmail').value.trim();
+        const notes = document.getElementById('editResidentNotes').value.trim();
+
+        if (!fullName || !plotNumber || !phone) {
+          showToast('Please fill in mandatory fields (Name, Plot Number, Phone)', 'error');
+          return;
+        }
+
+        if (phone.length < 10) {
+          showToast('Please enter a valid 10-digit mobile number', 'error');
+          return;
+        }
+
+        const requests = getRequests();
+        const index = requests.findIndex(r => r.id === refId);
+        if (index === -1) {
+          showToast('Resident record not found.', 'error');
+          return;
+        }
+
+        requests[index].fullName = fullName;
+        requests[index].plotNumber = plotNumber;
+        requests[index].phone = phone;
+        requests[index].residentType = residentType;
+        requests[index].status = status;
+        requests[index].email = email;
+        requests[index].notes = notes;
+        requests[index].updatedAt = new Date().toISOString();
+        if (status === 'approved' && !requests[index].approvedAt) {
+          requests[index].approvedAt = new Date().toISOString();
+        }
+
+        saveRequests(requests);
+        pushRequestsToCloud(requests);
+        closeModal('editResidentModal');
+        renderAdminRequests();
+        showToast(`Resident #${refId} (${fullName}) updated successfully!`, 'success');
       });
     }
 
@@ -1000,6 +1170,10 @@ _Warm regards,_
               ` : `
                 <span style="font-size: 0.75rem; color: #94a3b8;">Archived</span>
               `}
+              <button class="btn-action-edit" onclick="window.sbnrPortal.openEditResidentModal('${req.id}')" title="Edit details for #${req.id}">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>Edit</span>
+              </button>
               <button class="btn-action-delete" onclick="window.sbnrPortal.deleteResident('${req.id}')" title="Delete specific entry #${req.id}" style="display: inline-flex; align-items: center; gap: 0.25rem;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 <span>Delete</span>
@@ -1015,6 +1189,36 @@ _Warm regards,_
 
   // Global Exposed Functions for Table Button Actions
   window.sbnrPortal = {
+    openEditResidentModal: function (reqId) {
+      const requests = getRequests();
+      const req = requests.find(r => r.id === reqId);
+      if (!req) return;
+
+      const editRefId = document.getElementById('editResidentRefId');
+      const editRefIdDisplay = document.getElementById('editResidentRefIdDisplay');
+      const editDateDisplay = document.getElementById('editResidentDateDisplay');
+      const editName = document.getElementById('editResidentName');
+      const editPlot = document.getElementById('editResidentPlot');
+      const editPhone = document.getElementById('editResidentPhone');
+      const editType = document.getElementById('editResidentType');
+      const editStatus = document.getElementById('editResidentStatus');
+      const editEmail = document.getElementById('editResidentEmail');
+      const editNotes = document.getElementById('editResidentNotes');
+
+      if (editRefId) editRefId.value = req.id;
+      if (editRefIdDisplay) editRefIdDisplay.textContent = '#' + req.id;
+      if (editDateDisplay) editDateDisplay.textContent = req.timestamp ? new Date(req.timestamp).toLocaleDateString() : 'N/A';
+      if (editName) editName.value = req.fullName || '';
+      if (editPlot) editPlot.value = req.plotNumber || '';
+      if (editPhone) editPhone.value = req.phone || '';
+      if (editType) editType.value = req.residentType || 'House / Plot Owner (Residing)';
+      if (editStatus) editStatus.value = req.status || 'pending';
+      if (editEmail) editEmail.value = req.email || '';
+      if (editNotes) editNotes.value = req.notes || '';
+
+      openModal('editResidentModal');
+    },
+
     approveResident: function (reqId) {
       const requests = getRequests();
       const settings = getSettings();

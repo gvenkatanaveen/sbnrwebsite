@@ -1764,6 +1764,27 @@ button {
   color: #ffffff;
 }
 
+.btn-action-edit {
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-action-edit:hover {
+  background: #f59e0b;
+  color: #0b0f17;
+  border-color: #f59e0b;
+}
+
 .btn-action-delete {
   padding: 0.45rem 0.6rem;
   border-radius: var(--radius-sm);
